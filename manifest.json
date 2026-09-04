@@ -1,0 +1,60 @@
+{
+  "manifest_version": "0.3",
+  "name": "scml",
+  "display_name": "SCML — Security Middleware for LLM Agents",
+  "version": "1.0.0",
+  "description": "Authorize tool calls, scan for injection, quarantine poisoned memory, and redact PII through MCP.",
+  "author": {
+    "name": "ravindu57",
+    "url": "https://github.com/ravindu57"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ravindu57/scml-mcp.git"
+  },
+  "homepage": "https://github.com/ravindu57/SCML",
+  "support": "https://github.com/ravindu57/SCML/issues",
+  "keywords": ["security", "mcp", "llm", "injection-detection", "tool-policy"],
+  "license": "Apache-2.0",
+  "server": {
+    "type": "python",
+    "entry_point": "server.py",
+    "mcp_config": {
+      "command": "python",
+      "args": ["${__dirname}/server.py"],
+      "env": {
+        "SCML_URL": "${user_config.scml_url}",
+        "SCML_API_KEY": "${user_config.api_key}"
+      }
+    }
+  },
+  "tools": [
+    { "name": "authorize_tool_call", "description": "Check if a tool call is allowed by policy" },
+    { "name": "scan_content", "description": "Detect prompt injection in external content" },
+    { "name": "check_memory_write", "description": "Score a memory write for integrity" },
+    { "name": "redact_output", "description": "Strip PII and secrets from responses" },
+    { "name": "get_audit_trail", "description": "Replay session decisions with hash chain" },
+    { "name": "get_policy", "description": "Show active security policy" },
+    { "name": "health_check", "description": "Verify SCML mediator is running" }
+  ],
+  "user_config": {
+    "scml_url": {
+      "type": "string",
+      "title": "SCML Mediator URL",
+      "description": "URL of your running SCML mediator",
+      "default": "http://localhost:8000",
+      "required": true
+    },
+    "api_key": {
+      "type": "string",
+      "title": "API Key",
+      "description": "API key for SCML authentication (leave empty for dev mode)",
+      "sensitive": true,
+      "required": false
+    }
+  },
+  "compatibility": {
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": { "python": ">=3.11" }
+  }
+}
