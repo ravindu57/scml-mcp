@@ -1,0 +1,20 @@
+# MCPize Configuration
+# Docs: https://mcpize.com/docs/mcpize-yaml
+
+version: 1
+
+name: "scml-mcp"
+slug: "scml-mcp"
+
+runtime: python
+entry: "server.py"
+
+build:
+  install: "pip install --no-cache-dir -r requirements.txt"
+
+start:
+  type: stdio
+  command: "python server.py"
+
+bridge:
+  mode: stdio
